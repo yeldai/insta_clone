@@ -16,18 +16,28 @@ import {
 
 import { HomeIcon } from "@heroicons/react/solid";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { modalState } from "../atoms/modalAtom";
 
 function Header() {
   const { data: session } = useSession();
-  console.log(session);
+  const router = useRouter();
+  const [open, setOpen] = useRecoilState(modalState);
 
   return (
     <div className="shadow-sm border-b bg-white sticky top-0 z-50">
       <div className="flex justify-between max-w-6xl mx-5 lg:mx-auto">
-        <div className="relative hidden lg:inline-grid w-24 h-24">
+        <div
+          onClick={() => router.push("/")}
+          className="relative hidden lg:inline-grid w-24 h-24"
+        >
           <Image src={InstagramPic2} objectFit="contain" layout="fill" />
         </div>
-        <div className="relative w-20  lg:hidden flex-shrink-0 cursor-pointer">
+        <div
+          omClick={() => router.push("/")}
+          className="relative w-20  lg:hidden flex-shrink-0 cursor-pointer"
+        >
           <Image src={InstagramOld} objectFit="contain" layout="fill" />
         </div>
         <div className="max-w-xs">
@@ -44,7 +54,7 @@ function Header() {
         </div>
         <div></div>
         <div className="flex items-center justify-end space-x-4">
-          <HomeIcon className="navBtn" />
+          <HomeIcon onClick={() => router.push("/")} className="navBtn" />
           <MenuIcon className="w-6 md:hidden cursor-pointer" />
           {session ? (
             <>
@@ -55,7 +65,10 @@ function Header() {
                 </div>
               </div>
 
-              <PlusCircleIcon className="navBtn" />
+              <PlusCircleIcon
+                onClick={() => setOpen(true)}
+                className="navBtn"
+              />
               <UserGroupIcon className="navBtn" />
               <HeartIcon className="navBtn" />
               <img
